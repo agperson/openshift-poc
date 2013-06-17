@@ -12,6 +12,5 @@ class roles::puppetmaster {
     modulepath   => '/etc/puppet/env/$environment/modules:/etc/puppet/env/$environment/dist:/etc/puppet/env/$environment/site',
     manifest     => '/etc/puppet/manifests/site.pp',
     ca           => true,
-    storeconfigs => true,
   }
 }
