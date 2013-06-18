@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'fog'
+require 'trollop'
+require 'pp'
+require 'colored'
+
+opts = Trollop::options do
+  banner "Create a new EC2 instance for OpenShift using Puppet Cloud Provisioner"
+  opt :serial, "Serial number of instance (i.e. 003)", :short => 's', :type => Integer, :required => true
+  opt :role, "OpenShift role, one of: node, broker, bsn", :short => 'r', :type => String, :required => true
+end
+
+domain = "oo.huit.harvard.edu"
+role   = opts[:role]
+name   = "#{role}#{opts[:serial]}"
+fqdn   = "#{name}.#{domain}"
+
+puts "Provisioning new #{role} instance #{fqdn}\n".blue
+
+# Stream command output to screen so user knows what is going on, and write it
+# to a file so that we can get the instance's hostname
+tmp = `mktemp`.chomp
+
+system("puppet node_aws bootstrap          \
+  --region='us-east-1'                     \
+  --image='ami-52009e3b'                   \
+  --keyname='ds-openshift'                 \
+  --keyfile='/root/.ssh/ds-openshift.pem'  \
+  --instance-tags=\"Name=ds-#{name},Role=#{role}\" \
+  --facts=\"role=#{role}\"                 \
+  --security-group='ds-openshift'          \
+  --login='ec2-user'                       \
+  --type='m1.small' | tee #{tmp}")
+
+if not $?.success? then
+  puts "Instance creation failed. Please manually troubleshoot and delete the instance if necessary. Exiting!".red
+  File.delete(tmp)
+  exit 1
+else
+  hostname = File.readlines(tmp).grep(/public dns name: (ec2-.*\.com)/){$1}
+  File.delete(tmp)
+end
+
+puts "Creating DNS record mapping".blue
+puts "#{fqdn} -> #{hostname}"
+
+# Route53 DNS zone for oo.huit.harvard.edu
+zone = Fog::DNS[:aws].zones.get('ZYEWBM443QI4L')
+
+entry = zone.records.create(
+  :name  => fqdn,
+  :value => hostname,
+  :type  => 'CNAME',
+  :ttl   => '300'
+)
+
+puts "Done. Node #{fqdn} provisioned.".green
+exit
