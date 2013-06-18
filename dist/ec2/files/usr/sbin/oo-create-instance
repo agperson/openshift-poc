@@ -28,9 +28,10 @@ system("puppet node_aws bootstrap          \
   --keyname='ds-openshift'                 \
   --keyfile='/root/.ssh/ds-openshift.pem'  \
   --instance-tags=\"Name=ds-#{name},Role=#{role}\" \
-  --facts=\"role=#{role}\"                 \
+  --facts=\"oo_role=#{role}\"                 \
   --security-group='ds-openshift'          \
   --login='ec2-user'                       \
+  --puppetagent-certname=\"#{fqdn}\"       \
   --type='m1.small' | tee #{tmp}")
 
 if not $?.success? then
