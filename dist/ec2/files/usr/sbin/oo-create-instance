@@ -7,8 +7,26 @@ require 'colored'
 
 opts = Trollop::options do
   banner "Create a new EC2 instance for OpenShift using Puppet Cloud Provisioner"
-  opt :serial, "Serial number of instance (i.e. 003)", :short => 's', :type => Integer, :required => true
-  opt :role, "OpenShift role, one of: node, broker, bsn", :short => 'r', :type => String, :required => true
+  opt :serial, 'Serial number of instance (i.e. 003)',
+    :short    => 's',
+    :type     => Integer,
+    :required => true
+  opt :role, 'OpenShift role, one of: node, broker, bsn',
+    :short    => 'r',
+    :type     => String,
+    :required => true
+  opt :ami, 'Amazon Machine Image (AMI)',
+    :short   => 'a',
+    :type    => String,
+    :default => 'ami-52009e3b'
+  opt :group, 'Security group',
+    :short   => 'g',
+    :type    => String,
+    :default => 'ds-openshift'
+  opt :key, 'Authentication keypair (assumes keypair name matches a .pem file in ~/.ssh)',
+    :short   => 'k',
+    :type    => String,
+    :default => 'ds-openshift'
 end
 
 domain = "oo.huit.harvard.edu"
@@ -24,12 +42,12 @@ tmp = `mktemp`.chomp
 
 system("puppet node_aws bootstrap          \
   --region='us-east-1'                     \
-  --image='ami-52009e3b'                   \
-  --keyname='ds-openshift'                 \
-  --keyfile='/root/.ssh/ds-openshift.pem'  \
-  --instance-tags=\"Name=ds-#{name},Role=#{role}\" \
-  --facts=\"oo_role=#{role}\"                 \
-  --security-group='ds-openshift'          \
+  --image=\"#{opts[:ami]}\"                \
+  --keyname=\"#{opts[:key]}\"              \
+  --keyfile=\"~/.ssh/#{opts[:key]}.pem\"   \
+  --instance-tags=\"Name=#{name},Role=#{role}\" \
+  --facts=\"oo_role=#{role}\"              \
+  --security-group=\"#{opts[:group]}       \
   --login='ec2-user'                       \
   --puppetagent-certname=\"#{fqdn}\"       \
   --type='m1.small' | tee #{tmp}")
