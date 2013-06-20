@@ -21,7 +21,7 @@ The Puppetmaster will manage the entire environment, including provisioning node
 
 5. Add the Cloud Provisioner to root's RUBYLIB path:
 
-        $ echo "export RUBYLIB=/etc/puppet/environments/master/modules/cloud_provisioner/lib:$RUBYLIB" >> ~/.bash_profile
+        $ echo "export RUBYLIB=/etc/puppet/env/production/modules/cloud_provisioner/lib:\$RUBYLIB" >> ~/.bash_profile
 
 6. Download and run the bootstrap script as root:
 
