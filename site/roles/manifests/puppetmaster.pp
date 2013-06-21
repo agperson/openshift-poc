@@ -1,4 +1,10 @@
 class roles::puppetmaster {
+  class { 'r10k':
+    configfile => 'puppet:///modules/roles/puppetmaster/etc/r10k.yaml',
+  }
+
+  class { 'r10k::cron': }
+
   class { 'hiera':
     hierarchy  => [ 'common' ],
     hiera_yaml => '/etc/puppet/hiera.yaml',
