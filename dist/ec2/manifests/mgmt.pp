@@ -1,7 +1,6 @@
 class ec2::mgmt inherits ec2 {
   # Dependencies for puppet cloud provisioner and instance creation script
-  $pkgs = [ 'ruby-devel', 'gcc', 'rubygems', 'libxml2-devel', 'libxslt-devel',
-            'rubygems-json' ]
+  $pkgs = [ 'ruby-devel', 'gcc', 'rubygems', 'libxml2-devel', 'libxslt-devel' ]
   $gems = [ 'guid', 'json', 'trollop', 'colored']
   package { $pkgs:
     ensure => installed,
@@ -24,6 +23,6 @@ class ec2::mgmt inherits ec2 {
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
-    source => 'puppet:///dist/ec2/usr/sbin/oo-create-instance',
+    source => 'puppet:///modules/ec2/usr/sbin/oo-create-instance',
   }
 }

@@ -10,3 +10,4 @@ git clone http://github.com/huit/openshift-poc.git
 cd openshift-poc
 librarian-puppet install
 puppet apply -v --modulepath=dist:modules:site -e 'include profiles::openshift::puppetmaster'
+echo "oo_role=puppetmaster" > /etc/factor/facts.d/oo_role.txt
