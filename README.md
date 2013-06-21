@@ -25,11 +25,11 @@ The Puppetmaster will manage the entire environment, including provisioning node
 
 6. Download and run the bootstrap script as root:
 
-        $ wget https://raw.github.com/huit/openshift-poc/production/puppetmaster-bootstrap.sh
-        $ chmod +x puppetmaster-bootstrap.sh
-        $ sudo ./puppetmaster-bootstrap.sh
+        $ wget https://raw.github.com/huit/openshift-poc/production/bin/boostrap.sh
+        $ chmod +x bootstrap.sh
+        $ sudo ./bootstrap.sh
         
-The script will install necessary dependencies and apply the "openshift::puppetmaster" profile from this repository.
+The script will install necessary dependencies and apply the "puppetmaster" profile from this repository.
 
 Generating additional nodes
 ---------------------------

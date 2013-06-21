@@ -1,0 +1,13 @@
+# The location to use for storing cached Git repos
+:cachedir: '/var/cache/r10k'
+
+# A list of git repositories to create
+:sources:
+  :openshift:
+    remote: 'git://github.com/huit/openshift-poc.git'
+    basedir: '/etc/puppet/env'
+
+# This directory will be purged of any directory that doesn't map to a
+# git branch
+:purgedirs:
+  - '/etc/puppet/env'
