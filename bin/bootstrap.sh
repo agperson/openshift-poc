@@ -35,7 +35,7 @@ cd openshift-poc
 librarian-puppet install
 
 # Run Puppet
-puppet apply -v --modulepath=dist:modules:site -e 'include profiles::puppetmaster'
+puppet apply -v --modulepath=dist:modules:site site.pp
 
 # Clean up
 rm -r openshift-poc

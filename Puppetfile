@@ -16,7 +16,7 @@ mod "hunner/hiera"
 
 # r10k + Red Hat additions
 mod "r10k", 
-  :git => "https://github.com/huit/puppet-r10k.git"
+  :git => "https://github.com/agperson/puppet-r10k.git"
 
 # Provision hosts on EC2 from Puppetmaster
 mod "cloud_provisioner",
