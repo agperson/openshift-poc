@@ -4,6 +4,6 @@ node default {
     'broker':       { include profiles::broker }
     'node':         { include profiles::node }
     'bsn':          { include profiles::bsn }
-    default:        { fail("Invalid or undefined oo_role (${::oo_role})." }
+    default:        { fail("Invalid or undefined oo_role (${::oo_role}).") }
   }
 }

@@ -37,6 +37,9 @@ librarian-puppet install
 # Run Puppet
 puppet apply -v --modulepath=dist:modules:site site.pp
 
+# Kick-off r10k first run
+r10k synchronize -v
+
 # Clean up
 rm -r openshift-poc
 

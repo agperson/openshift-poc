@@ -21,7 +21,7 @@ class roles::puppetmaster {
 
   class { 'puppet::server':
     servertype         => 'standalone',
-    modulepath         => $::roles::puppetmaster::modulepath,
+    modulepath         => inline_template("<%= modulepath.join(':') %>"),
     manifest           => '/etc/puppet/env/$environment/site.pp',
     config_version_cmd => '/usr/bin/git --git-dir /etc/puppet/env/$environment/.git rev-parse --short HEAD 2>/dev/null || echo',
     ca                 => true,
