@@ -21,3 +21,9 @@ mod "r10k",
 # Provision hosts on EC2 from Puppetmaster
 mod "cloud_provisioner",
   :git => "git://github.com/puppetlabs/puppetlabs-cloud_provisioner.git"
+
+# OpenShift Origin
+mod "openshift_origin",
+  :git => "git://github.com/openshift/puppet-openshift_origin.git"
+
+mod "puppetlabs/ntp"
